@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informe SDD · Pulso</title><link rel="stylesheet" href="styles.css">
+<style>@media print{body{background:white}.doc-nav,.report-actions{display:none!important}.doc-page{max-width:none;padding:0}.doc-page h2{break-after:avoid}.doc-page table{font-size:10px}a{color:inherit!important}pre{white-space:pre-wrap}tr{break-inside:avoid}}</style></head>
+<body><main class="doc-page"><nav class="doc-nav"><a href="./" class="footer-brand">pulso.</a><a href="./">Volver al mercado ↗</a></nav>
+<div class="report-actions" style="margin:24px 0"><a href="informe.md" download>Descargar informe Markdown</a> · Usa Imprimir en el navegador para guardarlo como PDF.</div>
+<h1 id="informe-de-implementacion-pulso">Informe de implementación: Pulso</h1>
+<p><strong>Caso práctico grupal: flujo SDD con GitHub Spec Kit</strong><br />
+<strong>Fecha:</strong> 29 de octubre de 2026 · <strong>Versión del producto:</strong> 1.0.0<br />
+<strong>Herramienta:</strong> GitHub Spec Kit / Specify CLI 1.2.5<br />
+<strong>Fuente de datos:</strong> CoinGecko API · <strong>Moneda:</strong> USD</p>
+<h2 id="1-resumen-del-proyecto">1. Resumen del proyecto</h2>
+<p>Pulso es una página de consulta del mercado de criptomonedas. Permite buscar un activo por nombre o símbolo, revisar precio, variación porcentual de 24 horas y volumen, y estudiar gráficos en diferentes temporalidades. Incluye favoritos locales, ordenación, minigráficos y un informe integrado.</p>
+<p>El trabajo emplea SDD: una especificación con requisitos identificados dirige las decisiones técnicas, las tareas y la verificación. La evidencia combina archivos del proyecto, salidas reales de herramientas, consultas efectivas a CoinGecko y comprobaciones de navegador. No se declaran pruebas simuladas como si fueran disponibilidad real de la API.</p>
+<h2 id="2-interpretacion-y-alcance">2. Interpretación y alcance</h2>
+<p>El enunciado propone «criptomonedas / acciones» y exige CoinGecko. Se seleccionó el rastreador de criptomonedas, con BTC y ETH como casos principales. AAPL identifica una acción bursátil y no debe resolverse arbitrariamente como un token de nombre parecido. Por ello, símbolos bursátiles comunes reciben un mensaje de alcance. Incorporar acciones de bolsa requeriría acordar otro proveedor y una nueva especificación.</p>
+<p>Se implementan cuatro rangos: 24 horas, 7, 30 y 90 días. Cada gráfico representa precio en USD o volumen móvil de 24 horas. La variación de 24 horas del mercado y el rendimiento entre la primera y última muestra del gráfico son métricas distintas y se muestran separadas.</p>
+<p>No se incluyen compras, ventas, recomendaciones de inversión, cuentas propias, portafolios con saldos ni streaming de cotizaciones.</p>
+<h2 id="3-que-es-sdd-y-como-se-aplico">3. Qué es SDD y cómo se aplicó</h2>
+<p>Spec-Driven Development parte de describir el comportamiento verificable antes de implementar. La especificación es un contrato: explica qué problema se resuelve y permite comprobar el resultado. El plan define cómo resolverlo; las tareas convierten ese plan en trabajo ejecutable.</p>
+<p>El flujo de referencia de Spec Kit es constitución → especificación → plan → tareas → implementación → convergencia. La integración actual de Codex instala instrucciones con nombres como <code>$speckit-specify</code>; no son comandos de terminal ni un generador automático de toda la aplicación.</p>
+<table>
+<thead>
+<tr>
+<th>Etapa</th>
+<th>Aplicación en Pulso</th>
+<th>Evidencia</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Constitución</td>
+<td>Cinco principios: trazabilidad, integridad del dato, pruebas, accesibilidad y simplicidad</td>
+<td><code>.specify/memory/constitution.md</code></td>
+</tr>
+<tr>
+<td>Especificación</td>
+<td>Cuatro historias, 13 requisitos FR y cinco condiciones SC</td>
+<td><code>specs/001-crypto-tracker/spec.md</code></td>
+</tr>
+<tr>
+<td>Aclaración</td>
+<td>Criptomonedas frente a bolsa; USD; volumen móvil; rangos</td>
+<td><code>spec.md</code>, sección de alcance</td>
+</tr>
+<tr>
+<td>Investigación</td>
+<td>Lectura de documentación primaria y prueba de endpoints</td>
+<td><code>research.md</code>, captura real</td>
+</tr>
+<tr>
+<td>Plan</td>
+<td>Sitio estático, cliente API aislado, estados, caché y diseño</td>
+<td><code>plan.md</code>, <code>data-model.md</code>, <code>contracts/</code></td>
+</tr>
+<tr>
+<td>Tareas</td>
+<td>T001–T012 con relación a historias</td>
+<td><code>tasks.md</code></td>
+</tr>
+<tr>
+<td>Implementación</td>
+<td>HTML/CSS/JS, gráficos SVG y servidor local Node</td>
+<td><code>dist/</code>, <code>scripts/</code></td>
+</tr>
+<tr>
+<td>Verificación</td>
+<td>20 pruebas, sintaxis, revisión visual y consultas reales</td>
+<td><code>docs/evidence/</code>, <code>tests/</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="registro-honesto-de-la-ejecucion">Registro honesto de la ejecución</h3>
+<p>La especificación, investigación, plan y lista inicial de tareas se escribieron antes del código de la aplicación, mientras se instalaba el CLI. La inicialización formal de Spec Kit finalizó después de comenzar la implementación; entonces se incorporaron sus scripts, plantillas y skills oficiales y se formalizó la constitución sobre el scaffold resuelto. Esta ejecución es una aplicación del flujo en una sesión asistida, no una grabación de seis comandos independientes ni evidencia de revisión humana entre etapas. Para una práctica con puertas estrictas, el equipo debe iniciar el scaffold y aprobar la constitución antes de implementar.</p>
+<p>No se simula un historial de commits previo ni se atribuyen validaciones a compañeros que no participaron. El equipo puede repetir las etapas con las instrucciones instaladas y revisar cada resultado.</p>
+<h2 id="4-uso-real-de-github-spec-kit">4. Uso real de GitHub Spec Kit</h2>
+<p>Se instaló la distribución oficial <code>specify-cli==1.2.5</code> en un entorno virtual de Python 3.12.14. La documentación oficial reconoce PyPI como canal de distribución del proyecto de GitHub.</p>
+<p>El lanzador <code>specify.exe</code> generado por pip fue bloqueado por Control de aplicaciones de Windows. Se utilizó el mismo punto de entrada Python del paquete instalado; no se cambió la política del equipo. La API de GitHub devolvió un límite de consultas anónimas al consultar la versión más reciente; la instalación por PyPI y las plantillas empaquetadas permitieron completar la inicialización sin depender de esa API.</p>
+<p>Comandos efectivamente ejecutados, desde la carpeta del proyecto:</p>
+<pre><code class="language-powershell">../.spec-kit-venv/Scripts/python.exe -m pip install specify-cli
+../.spec-kit-venv/Scripts/python.exe -c 'from specify_cli import main; main()' version
+../.spec-kit-venv/Scripts/python.exe -c 'from specify_cli import main; main()' init --here --force --non-interactive --integration codex --integration-options=--skills --script ps --ignore-agent-tools
+./.specify/scripts/powershell/resolve-template.ps1 constitution-template -Json
+./.specify/scripts/powershell/resolve-template.ps1 spec-template -Json
+./.specify/scripts/powershell/resolve-template.ps1 plan-template -Json
+./.specify/scripts/powershell/resolve-template.ps1 tasks-template -Json
+./.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireSpec -RequireTasks -IncludeTasks
+</code></pre>
+<p>El primer comando de instalación se ejecutó desde la carpeta superior al crear el entorno; las rutas anteriores describen el entorno resultante desde el proyecto. Los logs preservan versión, inicialización y verificación de prerrequisitos. <code>.specify/integration.json</code> registra integración Codex y versión; <code>.agents/skills/</code> contiene las instrucciones oficiales. No se invocó el motor de workflow para una corrida desatendida ni se creó un repositorio en GitHub del usuario.</p>
+<h3 id="prompts-reproducibles-para-el-equipo">Prompts reproducibles para el equipo</h3>
+<p>Estas son instrucciones sugeridas para repetir el flujo con las skills instaladas; no se presentan como transcripciones de comandos ejecutados:</p>
+<pre><code class="language-text">$speckit-constitution Define principios de trazabilidad, datos verificables,
+pruebas reproducibles, accesibilidad y ausencia de claves en el cliente.
+
+$speckit-specify Construye un rastreador de criptomonedas con CoinGecko.
+Buscar por nombre o símbolo; mostrar precio USD, cambio 24 h y volumen.
+Añadir favoritos y gráficos de 24 h, 7, 30 y 90 días.
+
+$speckit-plan Usa HTML, CSS y módulos JavaScript sin framework.
+Aísla API, caché y cálculos. Distingue datos actuales de capturas fechadas.
+
+$speckit-tasks Divide el trabajo por historias, dependencias y verificación.
+$speckit-implement Ejecuta las tareas y registra las pruebas reales.
+$speckit-converge Revisa el resultado contra spec.md, plan.md y tasks.md.
+</code></pre>
+<h2 id="5-arquitectura-y-decisiones">5. Arquitectura y decisiones</h2>
+<p>El navegador carga <code>index.html</code>, <code>styles.css</code> y el módulo <code>app.js</code>. Este último controla el estado y las interacciones y delega en <code>core.js</code> las consultas, normalización, formato y cálculos. No se necesita una base de datos: los favoritos se guardan en localStorage y solo contienen IDs de monedas.</p>
+<pre><code class="language-text">Usuario → Interfaz HTML/CSS → app.js → core.js → CoinGecko
+                                 ↘ localStorage (favoritos)
+                                 ↘ snapshot.json (captura real fechada)
+Desarrollo: servidor HTTP Node → archivos de dist/
+Publicación: Sites → entrega estática con acceso privado inicial
+</code></pre>
+<p>Se eligieron módulos nativos para facilitar la reproducción: <code>npm start</code> ejecuta un servidor Node sin dependencias de producción. Los gráficos se dibujan con SVG para conservar control de ejes, tooltip y acceso con teclado sin cargar una biblioteca adicional.</p>
+<p>El cliente aplica timeout de 12 segundos, caché de 60 segundos para mercado y 5 minutos para históricos, deduplicación de consultas idénticas y pausa de 60 segundos después de un 429. La búsqueda remota espera 500 ms y descarta resultados obsoletos. El histórico utiliza una secuencia para impedir que una respuesta tardía sustituya el rango o activo más reciente.</p>
+<p>La vista usa fondo claro, texto oscuro y verde petróleo para la serie principal; los cambios llevan signo además de color. La barra lateral ofrece mercado, favoritos e informe. En móvil se priorizan gráfico y columnas esenciales, con desplazamiento contenido en la tabla si hace falta.</p>
+<h2 id="6-integracion-con-coingecko">6. Integración con CoinGecko</h2>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Uso</th>
+<th>Parámetros relevantes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/coins/markets</code></td>
+<td>Listado y métricas de activos</td>
+<td><code>vs_currency=usd</code>, <code>per_page=50</code>, <code>sparkline=true</code>; <code>ids</code> para resultados específicos</td>
+</tr>
+<tr>
+<td><code>/search</code></td>
+<td>Búsqueda adicional por nombre o símbolo</td>
+<td><code>query</code> codificada</td>
+</tr>
+<tr>
+<td><code>/coins/{id}/market_chart</code></td>
+<td>Series históricas</td>
+<td><code>vs_currency=usd</code>, <code>days=1</code>, <code>7</code>, <code>30</code> o <code>90</code></td>
+</tr>
+</tbody>
+</table>
+<p>Se usan identificadores como <code>bitcoin</code> y <code>ethereum</code>, nunca una conversión improvisada del ticker. Las respuestas se validan antes de cachearse. Las muestras no finitas o negativas se descartan y las fechas se ordenan.</p>
+<p>Los valores principales se toman de <code>current_price</code>, <code>price_change_percentage_24h</code> y <code>total_volume</code>. El rendimiento del gráfico es <code>(último precio / primer precio − 1) × 100</code>; si el denominador es cero, el resultado se representa como ausente. El máximo y mínimo del período son extremos de las muestras disponibles, no necesariamente máximos intraintervalo de una vela OHLC.</p>
+<h3 id="captura-de-respaldo-real">Captura de respaldo real</h3>
+<p>El 29/10/2026 a las 10:11 de Colombia se descargaron 50 activos y cuatro históricos de Bitcoin mediante <code>scripts/capture-snapshot.mjs</code>. <code>snapshot.json</code> conserva fecha de captura, origen y datos. Los registros del proveedor permanecen en las respuestas.</p>
+<table>
+<thead>
+<tr>
+<th>Período</th>
+<th>Valor de days</th>
+<th>Muestras de precio capturadas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>24 horas</td>
+<td>1</td>
+<td>288</td>
+</tr>
+<tr>
+<td>7 días</td>
+<td>7</td>
+<td>169</td>
+</tr>
+<tr>
+<td>30 días</td>
+<td>30</td>
+<td>721</td>
+</tr>
+<tr>
+<td>90 días</td>
+<td>90</td>
+<td>2160</td>
+</tr>
+</tbody>
+</table>
+<p>Las cantidades son evidencia de esta captura, no una promesa sobre respuestas futuras. La granularidad la decide CoinGecko. No se interpolaron ni fabricaron series. Si falla la conexión, el gráfico indica «Captura» con fecha. El respaldo incluido cubre Bitcoin; para otros activos se necesita el histórico remoto o una respuesta previa en memoria.</p>
+<h2 id="7-matriz-de-trazabilidad">7. Matriz de trazabilidad</h2>
+<table>
+<thead>
+<tr>
+<th>Requisitos</th>
+<th>Implementación</th>
+<th>Evidencia de verificación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-01, FR-03</td>
+<td>Mercado, selección y detalle en <code>app.js</code>; formato en <code>core.js</code></td>
+<td>Consulta real y selección de Ethereum en navegador; prueba de valores ausentes</td>
+</tr>
+<tr>
+<td>FR-02</td>
+<td>Filtro local y búsqueda remota con debounce</td>
+<td>Búsqueda BTC y ETH; pruebas de mayúsculas y codificación</td>
+</tr>
+<tr>
+<td>FR-04</td>
+<td>Mensajes, validación, timeout y límite de API</td>
+<td>Pruebas HTTP 403/429/500, timeout, contrato inválido; AAPL en navegador</td>
+</tr>
+<tr>
+<td>FR-05</td>
+<td>Rangos y URLs distintas</td>
+<td>Cuatro rangos comprobados; prueba de parámetros y captura</td>
+</tr>
+<tr>
+<td>FR-06</td>
+<td>SVG, tooltip, estadísticas y selector de métrica</td>
+<td>Pruebas de rendimiento/mínimos; tooltip con flechas y volumen en navegador</td>
+</tr>
+<tr>
+<td>FR-07</td>
+<td>Secuencias de histórico y búsqueda</td>
+<td>Inspección del control de secuencia y cambios rápidos de rango en navegador</td>
+</tr>
+<tr>
+<td>FR-08</td>
+<td>Sin serie ficticia; captura real identificada</td>
+<td>Prueba de contrato de histórico; captura ante límite real</td>
+</tr>
+<tr>
+<td>FR-09</td>
+<td>Favoritos por ID en localStorage</td>
+<td>Pruebas de persistencia y almacenamiento bloqueado; recarga en navegador</td>
+</tr>
+<tr>
+<td>FR-10</td>
+<td>Filtro de favoritos y selector de orden</td>
+<td>Filtro confirmado en navegador; inspección de comparadores</td>
+</tr>
+<tr>
+<td>FR-11</td>
+<td>Caché, deduplicación y actualización manual</td>
+<td>Pruebas TTL, actualización, concurrencia y pausa 429</td>
+</tr>
+<tr>
+<td>FR-12</td>
+<td>Artefactos SDD, informe y logs</td>
+<td>Prerrequisitos oficiales de Spec Kit y revisión de archivos</td>
+</tr>
+<tr>
+<td>FR-13</td>
+<td>CSS adaptable, etiquetas, foco y manejo de teclado</td>
+<td>Revisión visual escritorio/móvil y exploración del gráfico con teclado</td>
+</tr>
+</tbody>
+</table>
+<h2 id="8-resultados-de-verificacion">8. Resultados de verificación</h2>
+<p><code>npm run check</code> ejecutó comprobación de sintaxis de los módulos y <strong>20 pruebas: 20 aprobadas, 0 fallidas</strong>. Los casos HTTP de error se ejercitaron con mocks deterministas. El test de captura usa datos reales guardados y confirma cuatro duraciones diferentes.</p>
+<p>Las comprobaciones de navegador confirmaron:</p>
+<ul>
+<li>Mercado con 50 activos y precio real de Bitcoin; encabezado identificado como consulta a CoinGecko.</li>
+<li>Búsqueda de BTC y ETH, selección de Ethereum y explicación para AAPL.</li>
+<li>Gráficos de los cuatro rangos y cambio a volumen móvil de 24 horas.</li>
+<li>Tooltip con fecha/valor mediante flecha izquierda.</li>
+<li>Favorito de Bitcoin conservado al recargar y listado en la pestaña de favoritos.</li>
+<li>Límite real del proveedor durante uso intensivo; presentación de captura fechada en lugar de un gráfico inventado.</li>
+<li>Revisión visual en escritorio y pantalla móvil de 390 × 844; corrección de un desbordamiento causado por contenido de tabla y etiquetas ocultas.</li>
+</ul>
+<p>La revisión de accesibilidad es básica; no equivale a una auditoría integral WCAG ni a una prueba con todos los lectores de pantalla. FR-07 se verificó por código y cambio rápido de selección, sin afirmar una suite completa de red desordenada. Ordenación se revisó por implementación; las pruebas automatizadas se concentran en las invariantes de datos y API.</p>
+<h2 id="9-limites-y-riesgos-observados">9. Límites y riesgos observados</h2>
+<p>CoinGecko respondió sin clave durante la construcción, pero su documentación contempla autenticación para Demo. El acceso público sin clave puede ser restringido. No se solicita ni expone una clave del usuario; un despliegue con acceso autenticado estable necesitaría un proxy con secreto de servidor y respetar el plan contratado.</p>
+<p>La captura no garantiza un precio actual después de su fecha. El estado y el gráfico indican su procedencia separadamente: es posible que el mercado se actualice y el histórico use captura. Google Fonts e imágenes de monedas requieren red; hay fuentes del sistema como respaldo. Los favoritos no se sincronizan entre equipos u orígenes.</p>
+<p>Los indicadores de capitalización, volumen y dominio de Bitcoin se calculan sobre los activos cargados, no sobre todo CoinGecko. Los porcentajes pueden diferir de una estadística mundial. Los agregados de volumen no deben interpretarse como una medición única de transacciones sin doble conteo entre activos.</p>
+<h2 id="10-reproducir-y-presentar">10. Reproducir y presentar</h2>
+<pre><code class="language-powershell">cd D:\carlo\Desktop\lab-topicos\pulso
+npm start
+# Abrir http://127.0.0.1:4173
+npm run check
+</code></pre>
+<p>Para actualizar el respaldo: <code>npm run snapshot</code>, con conexión y respetando límites. La página del informe ofrece el documento para descargar y una versión imprimible mediante el navegador. El código y todos los artefactos se entregan juntos.</p>
+<p>Guion sugerido de exposición: explicar el problema; mostrar constitución y requisitos; presentar plan/contrato; recorrer BTC, temporalidades y favoritos; enseñar pruebas y explicar cómo SDD permite relacionar cada comportamiento con su especificación.</p>
+<p>Para repartir el trabajo, el grupo puede asignar análisis/especificación, integración de datos, interfaz/gráficos y verificación/documentación. Esto es una propuesta organizativa: los nombres y aportes reales deben registrarlos sus integrantes. No se atribuye participación ficticia a Geraldine ni a otras personas.</p>
+<h2 id="11-fuentes-primarias">11. Fuentes primarias</h2>
+<ul>
+<li><a href="https://github.com/github/spec-kit">GitHub Spec Kit: repositorio oficial</a>.</li>
+<li><a href="https://github.github.io/spec-kit/installation.html">Instalación de Spec Kit</a>.</li>
+<li><a href="https://www.coingecko.com/en/api">CoinGecko API: alcance y productos</a>.</li>
+<li><a href="https://docs.coingecko.com/demo/reference/coins-markets">CoinGecko Demo: mercados</a>.</li>
+<li><a href="https://docs.coingecko.com/demo/reference/search">CoinGecko Demo: búsqueda</a>.</li>
+<li><a href="https://docs.coingecko.com/demo/reference/coins-id-market-chart">CoinGecko Demo: históricos</a>.</li>
+<li><a href="https://docs.coingecko.com/docs/common-errors-rate-limit">CoinGecko: errores y límites</a>.</li>
+</ul>
+<p>Las fuentes se consultaron el 29/10/2026. Los archivos locales y logs complementan la documentación del proveedor con evidencia de esta ejecución.</p><footer style="padding:35px 0"><a href="./">Volver al rastreador</a></footer></main></body></html>

@@ -1,0 +1,15 @@
+{
+  "name": "pulso-sdd",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Rastreador de criptomonedas desarrollado con GitHub Spec Kit",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check dist/app.js && node --check dist/core.js && node --test tests/*.test.mjs",
+    "snapshot": "node scripts/capture-snapshot.mjs"
+  },
+  "engines": {"node": ">=20"}
+}

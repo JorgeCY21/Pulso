@@ -1,0 +1,1 @@
+{"FEATURE_DIR":"D:/carlo/Desktop/lab-topicos/pulso/specs/001-crypto-tracker","AVAILABLE_DOCS":["research.md","data-model.md","contracts/","tasks.md"]}

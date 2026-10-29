@@ -1,0 +1,16 @@
+{
+  "id": "appgdep_6ae364f11ac081918c8ae7f7ee7d3873",
+  "project_id": "appgprj_6ae360fce47081918c8f6a0110ae1aab",
+  "title": "Pulso · Explorador de criptomonedas",
+  "version_id": "appgprj_6ae360fce47081918c8f6a0110ae1aab~appgver_fd9fbe341318819181032cbc1d7878c3",
+  "type": "publish",
+  "status": "succeeded",
+  "url": "https://pulso-mercado-sdd.deepgiant66.chatgpt.site",
+  "has_mcp": false,
+  "screenshot_asset_pointer": null,
+  "provider_deployment_id": "site---6ae360fce47081918c8f6a0110ae1aab",
+  "failure_message": null,
+  "env_set_revision": 0,
+  "updated_at": "2026-10-29T15:23:45.095898+00:00",
+  "verified_source_commit": "0830f2e7479cd105ccd471e85be4eb551cd02248"
+}

@@ -1,0 +1,33 @@
+# Dependencias y cachés del gestor de paquetes
+node_modules/
+.spec-kit-venv/
+.venv/
+.pnpm-store/
+.npm/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Variables de entorno y secretos locales
+.env
+.env.*
+!.env.example
+
+# Archivos locales de OpenAI/Sites (la configuración publicada sí se conserva)
+.openai/cache/
+
+# Archivos temporales del sistema y del editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+
+# Paquetes generados y resultados de pruebas
+*.tar.gz
+*.zip
+test-results/
+coverage/
+tmp/
+.spec-kit-source

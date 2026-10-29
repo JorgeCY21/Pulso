@@ -1,0 +1,2 @@
+# Solo para regenerar el informe; no se necesita para ejecutar la página.
+Markdown==3.11.2

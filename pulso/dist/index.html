@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Explora el mercado cripto: precios en USD, favoritos y gráficos históricos con datos de CoinGecko."
+    />
+    <meta name="theme-color" content="#087f72" />
+    <title>Pulso · El mercado, en perspectiva</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%23087f72'/%3E%3Cpath d='M6 23h7l4-12 6 21 4-13h7' fill='none' stroke='white' stroke-width='3'/%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;650;700;750;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Saltar al contenido</a>
+    <aside class="sidebar">
+      <a class="brand" href="./" aria-label="Pulso, inicio"
+        ><span class="brand-symbol"
+          ><svg viewBox="0 0 32 32">
+            <path d="M2 18h7l4-12 6 21 4-13h7" /></svg></span
+        >pulso<span class="brand-dot">.</span></a
+      >
+      <div class="workspace-label">Tu espacio de mercado</div>
+      <nav aria-label="Navegación principal">
+        <button class="nav-item active" data-view="all">
+          <span>◫</span> Vista general</button
+        ><button class="nav-item" data-view="favorites">
+          <span>☆</span> Mis favoritos <small id="fav-count">0</small></button
+        ><a class="nav-item" href="informe.html"
+          ><span>▤</span> Informe del proyecto
+          <span class="small-arrow">↗</span></a
+        >
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="source-icon">◉</div>
+        <strong>Datos que vienen de la fuente.</strong>
+        <p>Información de mercado proporcionada por CoinGecko.</p>
+        <a
+          href="https://www.coingecko.com/en/api"
+          target="_blank"
+          rel="noopener"
+          >Conocer la API ↗</a
+        >
+      </div>
+      <div class="academic">
+        <span class="academic-icon">⌘</span>
+        <div>
+          Construido con SDD<small>GitHub Spec Kit · Proyecto grupal</small>
+        </div>
+      </div>
+    </aside>
+    <div class="shell">
+      <header class="topbar">
+        <div class="breadcrumb">
+          Mercado <span>/</span>
+          <strong id="breadcrumb-current">Vista general</strong>
+        </div>
+        <div class="topbar-right">
+          <span class="currency">USD <span>⌄</span></span
+          ><a href="informe.html" class="sdd-tag"
+            >Proyecto SDD <span>↗</span></a
+          >
+          <div class="avatar" title="Espacio local">P</div>
+        </div>
+      </header>
+      <main id="main">
+        <section class="page-heading">
+          <div>
+            <div class="heading-kicker">
+              <span class="live-dot"></span> Tu radar del mercado cripto
+            </div>
+            <h1>El mercado, en perspectiva<span>.</span></h1>
+            <p>Explora, compara y sigue el pulso de tus criptomonedas.</p>
+          </div>
+          <button id="refresh" class="button secondary">
+            <span aria-hidden="true">↻</span> Actualizar
+          </button>
+        </section>
+        <div class="data-status" id="data-status" role="status">
+          Conectando con CoinGecko…
+        </div>
+        <div id="notice" class="notice" role="status" hidden></div>
+        <section
+          class="overview"
+          aria-label="Resumen de la selección de mercado"
+        >
+          <article class="overview-stat">
+            <div>
+              <span class="stat-label">Capitalización de la selección</span
+              ><span class="stat-symbol">◷</span>
+            </div>
+            <strong id="market-cap">—</strong
+            ><small>Activos cargados · USD</small>
+          </article>
+          <article class="overview-stat">
+            <div>
+              <span class="stat-label">Volumen en 24 horas</span
+              ><span class="stat-symbol">▥</span>
+            </div>
+            <strong id="market-volume">—</strong
+            ><small>Volumen agregado de la selección · USD</small>
+          </article>
+          <article class="overview-stat">
+            <div>
+              <span class="stat-label">Dominio de Bitcoin</span
+              ><span class="stat-symbol">₿</span>
+            </div>
+            <strong id="btc-dominance">—</strong
+            ><small>Sobre la capitalización de la selección</small>
+          </article>
+          <article class="overview-stat">
+            <div>
+              <span class="stat-label">Balance del mercado</span
+              ><span class="stat-symbol">↗</span>
+            </div>
+            <strong id="market-balance">—</strong
+            ><small id="balance-caption"
+              >Activos al alza / a la baja en 24 h</small
+            >
+            <div class="balance-bar"><i id="balance-fill"></i></div>
+          </article>
+        </section>
+        <section
+          class="analysis-grid"
+          aria-label="Análisis del activo seleccionado"
+        >
+          <article class="chart-panel panel">
+            <div class="chart-heading">
+              <div class="coin-heading">
+                <span id="coin-icon" class="coin-placeholder">₿</span>
+                <div>
+                  <div class="coin-name-line">
+                    <h2 id="coin-name">Bitcoin</h2>
+                    <span id="coin-symbol" class="symbol-tag">BTC</span
+                    ><span id="coin-rank" class="rank-tag">#1</span>
+                  </div>
+                  <div class="coin-subtitle">Precio de la criptomoneda</div>
+                </div>
+              </div>
+              <button
+                id="selected-favorite"
+                class="icon-button"
+                aria-label="Añadir activo a favoritos"
+                aria-pressed="false"
+              >
+                ☆
+              </button>
+            </div>
+            <div class="price-heading">
+              <strong id="coin-price">—</strong
+              ><span id="coin-change" class="change">—</span
+              ><small>en 24 h</small>
+            </div>
+            <div class="chart-toolbar">
+              <div class="segmented" aria-label="Métrica del gráfico">
+                <button class="active" data-metric="prices" aria-pressed="true">
+                  Precio</button
+                ><button data-metric="total_volumes" aria-pressed="false">
+                  Volumen 24 h
+                </button>
+              </div>
+              <div class="range-buttons" aria-label="Temporalidad del gráfico">
+                <button data-days="1" aria-pressed="false">24 h</button
+                ><button data-days="7" class="active" aria-pressed="true">
+                  7 d</button
+                ><button data-days="30" aria-pressed="false">30 d</button
+                ><button data-days="90" aria-pressed="false">90 d</button>
+              </div>
+            </div>
+            <div class="chart-container" id="chart-container" aria-busy="true">
+              <div class="chart-empty">Cargando histórico…</div>
+            </div>
+            <div class="chart-footer">
+              <span id="chart-status">Consultando histórico de CoinGecko</span
+              ><span
+                ><i class="legend-dot"></i
+                ><span id="chart-legend">Precio · USD</span></span
+              >
+            </div>
+          </article>
+          <aside class="asset-panel panel">
+            <div class="panel-title">
+              <h2>En detalle</h2>
+              <span>↗</span>
+            </div>
+            <p class="muted">Una mirada más cerca al activo.</p>
+            <dl class="asset-metrics">
+              <div>
+                <dt>Capitalización de mercado</dt>
+                <dd id="asset-cap">—</dd>
+              </div>
+              <div>
+                <dt>Volumen de 24 h</dt>
+                <dd id="asset-volume">—</dd>
+              </div>
+              <div>
+                <dt>Máximo de 24 h</dt>
+                <dd id="asset-high">—</dd>
+              </div>
+              <div>
+                <dt>Mínimo de 24 h</dt>
+                <dd id="asset-low">—</dd>
+              </div>
+            </dl>
+            <div class="period-summary">
+              <div class="period-title">
+                En este período <span id="period-label">7 días</span>
+              </div>
+              <div class="period-change" id="period-change">—</div>
+              <div class="period-limits">
+                <span>Mínimo<strong id="period-min">—</strong></span
+                ><span>Máximo<strong id="period-max">—</strong></span>
+              </div>
+            </div>
+            <a
+              id="coin-link"
+              class="coin-link"
+              href="https://www.coingecko.com/en/coins/bitcoin"
+              target="_blank"
+              rel="noopener"
+              >Ver en CoinGecko <span>↗</span></a
+            >
+          </aside>
+        </section>
+        <section class="market-panel panel" aria-labelledby="market-title">
+          <div class="market-heading">
+            <div>
+              <h2 id="market-title">
+                Explora el mercado
+                <span id="coin-count" class="count-tag">0</span>
+              </h2>
+              <p class="muted">Encuentra tu próximo activo para seguir.</p>
+            </div>
+            <div class="search-wrap">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.5" cy="10.5" r="6.5" />
+                <path d="m16 16 4 4" /></svg
+              ><input
+                id="search"
+                type="search"
+                placeholder="Buscar nombre o símbolo…"
+                aria-label="Buscar criptomoneda por nombre o símbolo"
+                autocomplete="off"
+              /><kbd>/</kbd>
+            </div>
+          </div>
+          <div class="market-controls">
+            <div class="market-tabs">
+              <button class="active" data-tab="all" aria-pressed="true">
+                Todas las criptos</button
+              ><button data-tab="favorites" aria-pressed="false">
+                ☆ Favoritos <span id="tab-fav-count">0</span>
+              </button>
+            </div>
+            <label class="sort-label"
+              >Ordenar por
+              <select id="sort" aria-label="Ordenar mercado">
+                <option value="cap">Capitalización</option>
+                <option value="price">Mayor precio</option>
+                <option value="gain">Mayor subida 24 h</option>
+                <option value="loss">Mayor caída 24 h</option>
+              </select></label
+            >
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th class="favorite-col">
+                    <span class="sr-only">Favorito</span>
+                  </th>
+                  <th>#</th>
+                  <th>Activo</th>
+                  <th class="number">Precio</th>
+                  <th class="number">24 h %</th>
+                  <th class="number secondary-col">Volumen 24 h</th>
+                  <th class="number secondary-col">Capitalización</th>
+                  <th class="spark-col">Últimos 7 días</th>
+                  <th><span class="sr-only">Seleccionar</span></th>
+                </tr>
+              </thead>
+              <tbody id="market-body">
+                <tr>
+                  <td colspan="9" class="table-empty">Cargando mercado…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <span id="table-caption"
+              >Precios expresados en dólares estadounidenses</span
+            ><span
+              >Fuente:
+              <a href="https://www.coingecko.com" target="_blank" rel="noopener"
+                >CoinGecko ↗</a
+              ></span
+            >
+          </div>
+        </section>
+        <footer class="page-footer">
+          <span class="footer-brand">pulso.</span
+          ><span>Observa el mercado. Decide con información.</span
+          ><a href="informe.html">Ver documentación SDD ↗</a>
+        </footer>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status" hidden></div>
+  </body>
+</html>

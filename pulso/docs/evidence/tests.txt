@@ -1,0 +1,32 @@
+
+> pulso-sdd@1.0.0 check
+> node --check dist/app.js && node --check dist/core.js && node --test tests/*.test.mjs
+
+✔ FR-05: rangos 1, 7, 30 y 90 días (4.1154ms)
+✔ FR-06: normaliza fechas y rechaza muestras inválidas sin mutar (0.7507ms)
+✔ FR-06: rendimiento, mínimo y máximo (1.1056ms)
+✔ FR-06: serie vacía y base cero no producen infinito (0.4096ms)
+✔ FR-02: buscar BTC y Bitcoin sin importar mayúsculas (0.4164ms)
+✔ FR-01: valores ausentes no se convierten en cero (1.0198ms)
+✔ FR-09: favoritos persisten por ID (0.7311ms)
+✔ FR-09: almacenamiento corrupto o bloqueado no rompe la página (0.3394ms)
+✔ FR-05: cada rango produce una URL distinta (1.6928ms)
+✔ FR-05: rechaza temporalidades no permitidas (1.8782ms)
+✔ FR-11: caché evita peticiones y expira según TTL (0.8847ms)
+✔ FR-11: actualización manual omite caché (0.4637ms)
+✔ FR-11: peticiones simultáneas se deduplican (10.8362ms)
+✔ FR-04: 429 informa límite y evita bucle de reintento (0.9957ms)
+✔ FR-04: errores 403 y 500 son explícitos (0.6595ms)
+✔ FR-04: rechaza JSON con contrato de mercado incorrecto (0.4061ms)
+✔ FR-08: rechaza histórico con estructura incorrecta (0.3008ms)
+✔ FR-02: codifica búsqueda e ID para no alterar ruta (0.3738ms)
+✔ FR-04: timeout cancela consulta y produce mensaje recuperable (6.7198ms)
+✔ SC-04: captura entregada contiene datos reales y cuatro históricos diferentes (12.8949ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 214.9632
